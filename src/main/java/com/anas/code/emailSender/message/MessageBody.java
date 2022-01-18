@@ -6,16 +6,13 @@ package com.anas.code.emailSender.message;
  */
 public class MessageBody {
     private String message;
-    private Type type;
 
     /**
      *  Create a new MessageBody object
      * @param message - the message to be sent
-     * @param type - the type of message e.g. TEXT, HTML
      */
-    public MessageBody(String message, Type type) {
+    public MessageBody(String message) {
         this.message = message;
-        this.type = type;
     }
 
     /**
@@ -23,14 +20,8 @@ public class MessageBody {
      * @return the message
      */
     public String getMessage() {
-        return message;
-    }
-
-    /**
-     *  Get the message type
-     * @return the message type
-     */
-    public Type getType() {
-        return type;
+        return "<div class=\"wrapper-class\">" +
+                message +
+                "</div>";
     }
 }

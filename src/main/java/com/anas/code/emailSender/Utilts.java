@@ -1,7 +1,6 @@
 package com.anas.code.emailSender;
 
 import com.anas.code.emailSender.email.Email;
-import com.anas.code.emailSender.message.Type;
 import com.anas.code.emailSender.user.User;
 
 import javax.mail.*;
@@ -31,7 +30,7 @@ public class Utilts {
         LOGGER.log(Level.INFO,"Setting up server");
 
         props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", "456");
+        props.put("mail.smtp.port", "465");
         props.put("mail.smtp.auth", "true"); // enable authentication
         props.put("mail.smtp.ssl.enable", "true"); // enable ssl
     }
@@ -95,15 +94,14 @@ public class Utilts {
                     attachmentsPart.attachFile(file);
                 }
             }
-            // Set text part
-            if (email.getBody().getType() == Type.TEXT) {
-                textPart.setText(email.getBody().getMessage());
-            } else {
-                textPart.setContent(email.getBody().getMessage(), email.getBody().getType().getMimeType());
-            }
+            // Set html part
+            textPart.setContent(email.getBody().getMessage(), "text/html");
+
             // Add parts to multipart
             multipart.addBodyPart(textPart);
-            multipart.addBodyPart(attachmentsPart);
+            if (email.getAttachments() != null) {
+                multipart.addBodyPart(attachmentsPart);
+            }
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }
