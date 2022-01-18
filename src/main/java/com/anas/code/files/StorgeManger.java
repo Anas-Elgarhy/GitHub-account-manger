@@ -9,20 +9,20 @@ import java.util.logging.Logger;
  * @author <a href="https://github.com/Anas-Elgarhy">Anas-Elgarhy</a>
  * at 2022-02-18
  */
-public class StoreManger {
+public class StorgeManger {
     private final String baseStorePath;
-    private final Logger LOGGER = Logger.getLogger(StoreManger.class.getName());
+    private final Logger LOGGER = Logger.getLogger(StorgeManger.class.getName());
 
     // Singleton pattern
-    private static StoreManger instance = null;
+    private static StorgeManger instance = null;
 
-    private StoreManger(String baseStorePath) {
+    private StorgeManger(String baseStorePath) {
         this.baseStorePath = baseStorePath;
     }
 
-    public static StoreManger getInstance(String baseStorePath) {
+    public static StorgeManger getInstance(String baseStorePath) {
         if (instance == null) {
-            instance = new StoreManger(baseStorePath);
+            instance = new StorgeManger(baseStorePath);
         }
         return instance;
     }

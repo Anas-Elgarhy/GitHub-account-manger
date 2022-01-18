@@ -1,6 +1,6 @@
 package com.anas.code.followers;
 
-import com.anas.code.files.StoreManger;
+import com.anas.code.files.StorgeManger;
 import org.kohsuke.github.GitHub;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class Utilities {
     }
 
     public static ArrayList<String> scanPreviousFollowers() {
-        return StoreManger.getInstance("store").getData(StoreManger.FilesKeys.Followers);
+        return StorgeManger.getInstance("store").getData(StorgeManger.FilesKeys.Followers);
     }
 
     public static void storeCurrentFollowers(ArrayList<String> currentFollowers) {
@@ -32,6 +32,6 @@ public class Utilities {
         for (String currentFollower : currentFollowers) {
             sb.append(currentFollower).append("\n");
         }
-        StoreManger.getInstance("store").writeData(StoreManger.FilesKeys.Followers, sb.toString());
+        StorgeManger.getInstance("store").writeData(StorgeManger.FilesKeys.Followers, sb.toString());
     }
 }
