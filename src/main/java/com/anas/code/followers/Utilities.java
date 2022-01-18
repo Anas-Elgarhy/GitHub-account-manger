@@ -32,6 +32,10 @@ public class Utilities {
         for (String currentFollower : currentFollowers) {
             sb.append(currentFollower).append("\n");
         }
-        StorgeManger.getInstance("store").writeData(StorgeManger.FilesKeys.Followers, sb.toString());
+        try {
+            StorgeManger.getInstance("store").writeData(StorgeManger.FilesKeys.Followers, sb.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

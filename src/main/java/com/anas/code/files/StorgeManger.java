@@ -59,15 +59,17 @@ public class StorgeManger {
         return data;
     }
 
-    public void writeData(FilesKeys key, String data) {
+    public void writeData(FilesKeys key, String data) throws IOException {
+        File baseFile = new File(baseStorePath);
+        // Create the base directory
+        if (!baseFile.exists()) {
+            if(!baseFile.mkdir()) {
+                throw new IOException("Can't create the base directory: " + baseStorePath);
+            }
+        }
         // Open the file
         try {
-            File fileReader = new File(key.name() + ".data");
-
-            // Create the file if it doesn't exist
-            if (!fileReader.exists()) {
-                fileReader.createNewFile();
-            }
+            File fileReader = new File(baseFile.getPath() + "/" +  key.name() + ".data");
 
             FileWriter fileWriter = new FileWriter(fileReader, false);
             // Write data to the file
