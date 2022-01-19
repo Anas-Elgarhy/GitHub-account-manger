@@ -43,6 +43,7 @@ public class Utilities {
         }
     }
 
+    // TODO: Re implement this method
     public static String generateHtmlReport(FollowersReport followersReport, GitHub gitHub) throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append("<h2>Followers Report</h2>")
