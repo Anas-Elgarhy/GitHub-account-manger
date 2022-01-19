@@ -46,6 +46,9 @@ public class Main {
 
             // Print report (for debugging)
             System.out.println(((FollowersReport)reportGenerator.getReport()).getCurrentFollowers());
+            System.out.println(((FollowersReport)reportGenerator.getReport()).getPreviousFollowers());
+            System.out.println(((FollowersReport)reportGenerator.getReport()).getNewFollowers());
+            System.out.println(((FollowersReport)reportGenerator.getReport()).getUnfollowed());
 
             // Store report
             reportGenerator.storeCurrentFollowers();

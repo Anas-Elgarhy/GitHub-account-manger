@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.kohsuke.github.GitHub;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -43,32 +44,44 @@ public class Utilities {
     }
 
     public static String generateHtmlReport(FollowersReport followersReport, GitHub gitHub) throws IOException {
-        Document doc = Jsoup.connect("src/main/resources/html/ReportTemplite.html").get();
-        Element title = doc.select("#report-title").first();
-        title.text(title.text().replace("{USER_NAME}", gitHub.getMyself().getName()));
+        StringBuilder sb = new StringBuilder();
+        sb.append("<h2>Followers Report</h2>")
+                .append("<h2>Hi ").append(gitHub.getMyself().getName()).append("</h2>")
+                .append("<ul>").append("<li>You Have a ").append(followersReport.getCurrentFollowersNumber()).append(" followers</li>")
+                .append("<li>You have").append(followersReport.getFollowingNumber()).append(" following</li>")
+                .append("</ul>")
+                .append("<ul>").append("<li>You have a ").append(followersReport.getNewFollowersNumber()).append(" new follower to day</li>")
+                .append("<li>You have $NUM_OF_NEW_FOLLOWING new following to day</li>").append("<li>").append(followersReport.getUnfollowedNumber()).append(" un following you to day</li>")
+                .append("</ul>");
 
-        doc.select("#follower-status").first().append(
-                            "<li>You Have a " + followersReport.getNewFollowersNumber() + "</li>\n" +
-                            "<li>You have $NUM_OF_FOLLOWING</li>");
-
-        doc.select("followers-det").first().append(
-                "<li>You have a " + followersReport.getNewFollowersNumber() + " new follower to day</li>\n" +
-                        "<li>You have $NUM_OF_NEW_FOLLOWING new following to day</li>\n" +
-                        "<li>" + followersReport.getUnfollowedNumber() + " un following you to day</li>"
-        );
-
-        StringBuilder newFollowers = new StringBuilder();
+        sb.append("<ul>");
         for (String newFollower : followersReport.getNewFollowers()) {
-            newFollowers.append("<li>").append(newFollower).append("</li>\n");
+            sb.append("<li>").append(newFollower).append("</li>\n");
         }
-        doc.select("#new-followers-list").first().append(newFollowers.toString());
+        sb.append("</ul>");
 
-        StringBuilder unfollowed = new StringBuilder();
+        sb.append("<ul>");
         for (String unfollowedFollower : followersReport.getUnfollowed()) {
-            unfollowed.append("<li>").append(unfollowedFollower).append("</li>\n");
+            sb.append("<li>").append(unfollowedFollower).append("</li>\n");
         }
-        doc.select("#unfollowed-list").first().append(unfollowed.toString());
+        sb.append("</ul>");
 
-        return doc.toString();
+        return sb.toString();
+    }
+
+    public static ArrayList<String> scanFollowings(GitHub github) {
+        ArrayList<String> followings = new ArrayList<>();
+        try {
+            github.getMyself().getFollows().forEach(follower -> {
+                try {
+                    followings.add(follower.getName() + " - @" + follower.getLogin());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return followings;
     }
 }

@@ -23,15 +23,23 @@ public class FollowersReportGenerator implements Generator {
 
     @Override
     public void generate() {
+        ArrayList<String> currentFollowers = Utilities.scanCurrentFollowers(github); // get current followers
+        ArrayList<String> previousFollowers = Utilities.scanPreviousFollowers(); // get previous followers
+        ArrayList<String> currentFollow = Utilities.scanFollowings(github);; // get current followings
         // Create a new report object
         followersReport = new FollowersReport() {
             @Override
             public ArrayList<String> getCurrentFollowers() {
-                return Utilities.scanCurrentFollowers(github); // get current followers
+                return currentFollowers;
             }
             @Override
             public ArrayList<String> getPreviousFollowers() {
-                return Utilities.scanPreviousFollowers(); // get previous followers
+                return previousFollowers;
+            }
+
+            @Override
+            public ArrayList<String> getFollowings() {
+                return currentFollow;
             }
         };
         LOGGER.info("Report generated successfully");

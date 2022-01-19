@@ -63,9 +63,11 @@ public interface FollowersReport extends Report {
         if (getCurrentFollowers() == null || getPreviousFollowers() == null) {
             return unfollowed;
         }
+        System.out.println("Start unfollowed");
         for (String previousFollower : getPreviousFollowers()) {
             if (!getCurrentFollowers().contains(previousFollower)) {
                 unfollowed.add(previousFollower);
+                System.out.println("- " + previousFollower);
             }
         }
         return unfollowed;
@@ -76,5 +78,13 @@ public interface FollowersReport extends Report {
             return 0;
         }
         return getUnfollowed().size();
+    }
+
+    public ArrayList<String> getFollowings();
+    public default int getFollowingNumber() {
+        if (getFollowings() == null) {
+            return 0;
+        }
+        return getFollowings().size();
     }
 }
