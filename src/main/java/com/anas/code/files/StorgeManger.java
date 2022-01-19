@@ -9,6 +9,7 @@ import java.util.logging.Logger;
  * @author <a href="https://github.com/Anas-Elgarhy">Anas-Elgarhy</a>
  * at 2022-02-18
  */
+//TODO: Stoer files in gist
 public class StorgeManger {
     private final String baseStorePath;
     private final Logger LOGGER = Logger.getLogger(StorgeManger.class.getName());
