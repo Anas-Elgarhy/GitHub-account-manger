@@ -37,6 +37,19 @@ public class Main {
                     return args[3];
                 }
             };
+
+
+            // Create Report generator
+            FollowersReportGenerator reportGenerator = new FollowersReportGenerator(gitHub);
+            // Generate report
+            reportGenerator.generate();
+
+            // Print report (for debugging)
+            System.out.println(((FollowersReport)reportGenerator.getReport()).getCurrentFollowers());
+
+            // Store report
+            reportGenerator.storeCurrentFollowers();
+
             // Get target email details
             EmailDetails targetEmail = new EmailDetails(){
 
@@ -61,7 +74,7 @@ public class Main {
 
                 @Override
                 public MessageBody getBody() {
-                    return new MessageBody("<div><h1>Followers Report2</h1></div>");
+                    return new MessageBody(reportGenerator.getHtmlReport());
                 }
 
                 @Override
@@ -69,17 +82,6 @@ public class Main {
                     return null;
                 }
             };
-
-            // Create Report generator
-            FollowersReportGenerator reportGenerator = new FollowersReportGenerator(gitHub);
-            // Generate report
-            reportGenerator.generate();
-
-            // Print report (for debugging)
-            System.out.println(((FollowersReport)reportGenerator.getReport()).getCurrentFollowers());
-
-            // Store report
-            reportGenerator.storeCurrentFollowers();
 
             // Send report
             EmailSender emailSender = new EmailSender(new Email(targetEmail), user);

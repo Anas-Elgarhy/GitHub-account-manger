@@ -4,6 +4,7 @@ import com.anas.code.Generator;
 import com.anas.code.Report;
 import org.kohsuke.github.GitHub;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -43,5 +44,14 @@ public class FollowersReportGenerator implements Generator {
     @Override
     public Report getReport() {
         return followersReport;
+    }
+
+    public String getHtmlReport() {
+        try {
+            return Utilities.generateHtmlReport(followersReport, github);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

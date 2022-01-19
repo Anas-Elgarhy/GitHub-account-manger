@@ -1,6 +1,9 @@
 package com.anas.code.followers;
 
 import com.anas.code.files.StorgeManger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.kohsuke.github.GitHub;
 
 import java.io.IOException;
@@ -37,5 +40,35 @@ public class Utilities {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String generateHtmlReport(FollowersReport followersReport, GitHub gitHub) throws IOException {
+        Document doc = Jsoup.connect("src/main/resources/html/ReportTemplite.html").get();
+        Element title = doc.select("#report-title").first();
+        title.text(title.text().replace("{USER_NAME}", gitHub.getMyself().getName()));
+
+        doc.select("#follower-status").first().append(
+                            "<li>You Have a " + followersReport.getNewFollowersNumber() + "</li>\n" +
+                            "<li>You have $NUM_OF_FOLLOWING</li>");
+
+        doc.select("followers-det").first().append(
+                "<li>You have a " + followersReport.getNewFollowersNumber() + " new follower to day</li>\n" +
+                        "<li>You have $NUM_OF_NEW_FOLLOWING new following to day</li>\n" +
+                        "<li>" + followersReport.getUnfollowedNumber() + " un following you to day</li>"
+        );
+
+        StringBuilder newFollowers = new StringBuilder();
+        for (String newFollower : followersReport.getNewFollowers()) {
+            newFollowers.append("<li>").append(newFollower).append("</li>\n");
+        }
+        doc.select("#new-followers-list").first().append(newFollowers.toString());
+
+        StringBuilder unfollowed = new StringBuilder();
+        for (String unfollowedFollower : followersReport.getUnfollowed()) {
+            unfollowed.append("<li>").append(unfollowedFollower).append("</li>\n");
+        }
+        doc.select("#unfollowed-list").first().append(unfollowed.toString());
+
+        return doc.toString();
     }
 }
